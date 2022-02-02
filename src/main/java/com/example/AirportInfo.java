@@ -5,7 +5,9 @@ import com.google.gson.annotations.Expose;
 
 /**
  * A class representing an object containing information
- * about the Airport,
+ * about major US airports, time (month/year), and delay statistics.
+ * Data taken between 01/2010 and 12/2015.
+ * Deserialized from <code>delays.json</code>.
  */
 public class AirportInfo {
 
@@ -13,56 +15,70 @@ public class AirportInfo {
     private Time time;
     private Statistics statistics;
 
-    private class Airport {
+    /**
+     * A class representing an airport.
+     * Contains the three-letter airport code and full name.
+     */
+    public class Airport {
         private String code;
         private String name;
-        public String toString() {return code;}
+
+        public String getCode() {return code;}
+        public String getName() {return name;}
     }
 
-    private class Time {
-        private String label;
+    /**
+     * A class representing the date.
+     * Contains the month and year in which data was collected.
+     */
+    public class Time {
         private int month;
-        private String monthName;
         private int year;
+
+        public int getMonth()   {return month;}
+        public int getYear()    {return year;}
     }
 
-    private class Statistics {
-        private NumDelays numDelays;
-//        private Carriers Carriers;
+    /**
+     * A class representing flight statistics.
+     * Contains inner classes for flights and number of minutes delayed.
+     */
+    public class Statistics {
+
         private Flights flights;
         private MinDelay minutesDelayed;
 
-        private class NumDelays {
-            private int carrier;
-            private int lateAircraft;
-            private int NAS;
-            private int security;
-            private int weather;
-        }
-//        private class Carriers {
-//            private String Names;
-//            private int total;
-//        }
-        private class Flights {
+        public class Flights {
             private int cancelled;
             private int delayed;
             private int diverted;
             private int onTime;
             private int total;
+
+            public int getCancelled()   {return cancelled;}
+            public int getDelayed()     {return delayed;}
+            public int getDiverted()    {return diverted;}
+            public int getOnTime()      {return onTime;}
+            public int getTotal()       {return total;}
         }
-        private class MinDelay {
-            private int carrier;
-            private int lateAircraft;
-            private int NAS;
-            private int security;
+
+        public class MinDelay {
             private int total;
-            private int weather;
+            public int getTotal() {return total;}
         }
+
+        public MinDelay getMinutesDelayed() {return minutesDelayed;}
+        public Flights getFlights()         {return flights;}
     }
 
+    public Airport getAirport()         {return airport;}
+    public Time getTime()               {return time;}
+    public Statistics getStatistics()   {return statistics;}
+
     public String toString() {
-        return "Airport: " + this.airport + "\n" +
+        return "Airport: " + this.airport.code + " (" + this.airport.name + ")\n" +
                 "Date: " + this.time.month + "/" + this.time.year;
+
     }
 }
 
